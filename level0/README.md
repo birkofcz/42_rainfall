@@ -30,7 +30,7 @@ The assembly dump for a main function in **gdb** tool will tell us more:
    0x08048ee7 <+39>:	call   0x8050bf0 <strdup>
    0x08048eec <+44>:	mov    %eax,0x10(%esp)
    0x08048ef0 <+48>:	movl   $0x0,0x14(%esp)
-   0x08048ef8 <+56>:	call   0x8054680 <getegid>       ;here we see getegit and also getuid syscalls, hinting that if the aboce comparation is a success,
+   0x08048ef8 <+56>:	call   0x8054680 <getegid>       ;here we see getegid and also getuid syscalls, hinting that if the aboce comparation is a success,
                                                       ;permissions will be manipulated
    0x08048efd <+61>:	mov    %eax,0x1c(%esp)
    0x08048f01 <+65>:	call   0x8054670 <geteuid>
