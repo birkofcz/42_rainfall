@@ -1,6 +1,6 @@
 **test**
 
-~~~
+~~~assembly
    0x08048ec0 <+0>:	push   %ebp
    0x08048ec1 <+1>:	mov    %esp,%ebp
    0x08048ec3 <+3>:	and    $0xfffffff0,%esp
