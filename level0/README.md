@@ -1,5 +1,16 @@
-**test**
+**Basic examination**
+Only one file, an executable named "level0" is waiting for us. We can try to run it. 
 
+~~~sh
+./level0
+zsh: segmentation fault  ./level0
+./level0 42
+No !
+~~~
+There is segfault with no args, but we get the response when argument is entered. This is leading us to the assumption that we are just looking for the right argumemt here. Lets take a look inside!
+
+**Assembly basic analysis**
+The assembly dump for a main function in gdb tool will tell us more:
 ~~~assembly
    0x08048ec0 <+0>:	push   %ebp
    0x08048ec1 <+1>:	mov    %esp,%ebp
@@ -56,3 +67,7 @@
    0x08048f85 <+197>:	leave
    0x08048f86 <+198>:	ret
 ~~~
+What we see here is probably a program that takes argument, compares it with the "password" and when it is equal, it will run some routine with getting the IDs and setting them appropriatelly, calling some routine at the end. When it is not equal, it writes something on the screen and returns. 
+The assembly dump gave the right input away from the very beginning, so we just try to run the executable with proper argument, and....
+
+...here we go to level1!
