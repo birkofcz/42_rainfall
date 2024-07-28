@@ -10,7 +10,7 @@ No !
 ~~~
 There is segfault with no args, but we get the response when argument is entered. This is leading us to the assumption that we are just looking for the right argumemt here. Lets take a look inside!
 
-***Basic Assembly analysis***
+**Assembly dump analysis**
 
 The assembly dump for a main function in **gdb** tool will tell us more:
 ~~~assembly
@@ -75,4 +75,4 @@ When it is not equal, it writes "No !" on the screen and returns.
 
 The assembly dump gave the right input away from the very beginning, so we just try to run the executable with **423**, and....
 
-***... here we go to level1!**
+**... here we go to level1!**
