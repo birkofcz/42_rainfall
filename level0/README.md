@@ -1,4 +1,5 @@
 **Basic examination**
+
 Only one file, an executable named "level0" is waiting for us. We can try to run it. 
 
 ~~~sh
@@ -9,7 +10,8 @@ No !
 ~~~
 There is segfault with no args, but we get the response when argument is entered. This is leading us to the assumption that we are just looking for the right argumemt here. Lets take a look inside!
 
-**Assembly basic analysis**
+***Assembly basic analysis***
+
 The assembly dump for a main function in gdb tool will tell us more:
 ~~~assembly
    0x08048ec0 <+0>:	push   %ebp
