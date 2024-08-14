@@ -24,9 +24,7 @@ The assembly dump for a main function in **gdb** tool will show us more:
    0x08048496 <+22>:	ret                          ;pops the return address from the stack and jumps to it
 ~~~
 
-As we can see, the main allocates 80 bytes on the stack, calculates the pointer to the buffer for gets, calls gets and returns, with no other procedures.   
-This looks like a dead end and we need to examine further, so we list all the functions in gdb, using **info functions** command.  
-From the listing, **run()** looks like our way forward, as also the assembly dump suggest by calling a system function:
+As we can see, the main allocates 80 bytes on the stack, calculates the pointer to the buffer for gets, calls gets and returns, with no other procedures. This looks like a dead end and we need to examine further, so we list all the functions in gdb, using **info functions** command. From the listing, **run()** looks like our way forward, as also the assembly dump suggest by calling a system function:
 ~~~assembly
    0x08048444 <+0>:	push   %ebp
    0x08048445 <+1>:	mov    %esp,%ebp
@@ -44,3 +42,8 @@ From the listing, **run()** looks like our way forward, as also the assembly dum
    0x0804847e <+58>:	leave  
    0x0804847f <+59>:	ret  
 ~~~
+There is no direct call from **main** to run run(), so we need to somehow force the execution workflow to run it. This will be done using **buffer overflow** (stakc frame and principles of buffer overflow beautifully explained [**HERE**](https://www.cameronwickes.co.uk/stack-frames-pointers/)  
+
+##Buffer overflow##
+
+
