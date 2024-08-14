@@ -42,8 +42,13 @@ As we can see, the main allocates 80 bytes on the stack, calculates the pointer 
    0x0804847e <+58>:	leave  
    0x0804847f <+59>:	ret  
 ~~~
-There is no direct call from **main** to run run(), so we need to somehow force the execution workflow to run it. This will be done using **buffer overflow** (stakc frame and principles of buffer overflow beautifully explained [**HERE**](https://www.cameronwickes.co.uk/stack-frames-pointers/)  
+There is no direct call from **main** to run run(), so we need to somehow force the execution workflow to run it. This will be done using **buffer overflow** (stakc frame and principles of buffer overflow beautifully explained [**HERE**](https://www.cameronwickes.co.uk/stack-frames-pointers/).  
 
-##Buffer overflow##
+## Buffer overflow
+The memory address of the run is **0x08048444**as we can see from the previous info functions command in gdb. Now we just need and offset to get the location of the proper position to rewrite in stack frame of the program. We can use some pattern generator (like [**Wiremask**](https://wiremask.eu/tools/buffer-overflow-pattern-generator/) along with gdb to calculate it. Running a program with dummy pattern will give us a segfault, but gdb will tell us it happens at **0x63413563**. We put this to Wiremask tool to find out the offset is 76.
+Now we can create a string to send to the program that will contain the memory address of the run() function right after the offset, thus forcing it to execute as return address. We can do this using a simple python script and a pipe to send the output to the program as stdin:
+~~~bash
+python3 -c 'print("42" * 38 + "\x08\x04\x84\x44[::-1]" | ./level1
+~~~
 
 
