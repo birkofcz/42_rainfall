@@ -1,4 +1,4 @@
-**Basic examination**
+## Basic examination
 
 Again, only one file, "level1" to run. Let's try it.
 ~~~bash
@@ -7,7 +7,7 @@ Again, only one file, "level1" to run. Let's try it.
 ~~~
 Exacutable waits for the user input and than exits. 
 
-**Assembly dump analysis**
+## Assembly dump analysis
 
 The assembly dump for a main function in **gdb** tool will show us more:
 ~~~assembly
