@@ -24,7 +24,7 @@ The assembly dump for a main function in **gdb** tool will show us more:
    0x08048496 <+22>:	ret                          ;pops the return address from the stack and jumps to it
 ~~~
 
-As we can see, the main allocates 80 bytes on the stack, calculates the pointer to the buffer for gets, calls gets and returns, with no other procedures. This looks like a dead end and we need to examine further, so we list all the functions in gdb, using **info functions** command. From the listing, **run()** looks like our way forward, as also the assembly dump suggest by calling a system function:
+As we can see, the main allocates 80 bytes on the stack, calculates the pointer to the buffer for **gets()**, calls it and returns, with no other procedures. This looks like a dead end and we need to examine further, so we list all the functions in gdb, using **info functions** command. From the listing, **run()** looks like our way forward, as also the assembly dump suggest by calling a system function:
 ~~~assembly
    0x08048444 <+0>:	push   %ebp
    0x08048445 <+1>:	mov    %esp,%ebp
@@ -42,7 +42,7 @@ As we can see, the main allocates 80 bytes on the stack, calculates the pointer 
    0x0804847e <+58>:	leave  
    0x0804847f <+59>:	ret  
 ~~~
-There is no direct call from **main** to run run(), so we need to somehow force the execution workflow to run it. This will be done using **buffer overflow** (stakc frame and principles of buffer overflow beautifully explained [**HERE**](https://www.cameronwickes.co.uk/stack-frames-pointers/).  
+There is no direct call from **main** to run run(), so we need to somehow force the execution workflow to run it. We know **gets()** is vulnerable to overflow  as it has no protection to the buffer. So this can be done using **buffer overflow** (stack frame and principles of buffer overflow beautifully explained [**HERE**](https://www.cameronwickes.co.uk/stack-frames-pointers/).  
 
 ## Buffer overflow
 The memory address of the run is **0x08048444**as we can see from the previous info functions command in gdb. Now we just need and offset to get the location of the proper position to rewrite in stack frame of the program. We can use some pattern generator (like [**Wiremask**](https://wiremask.eu/tools/buffer-overflow-pattern-generator/) along with gdb to calculate it. Running a program with dummy pattern will give us a segfault, but gdb will tell us it happens at **0x63413563**. We put this to Wiremask tool to find out the offset is 76.
