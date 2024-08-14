@@ -25,30 +25,8 @@ The assembly dump for a main function in **gdb** tool will show us more:
 ~~~
 
 As we can see, the main allocates 80 bytes on the stack, calculates the pointer to the buffer for gets, calls gets and returns, with no other procedures.   
-This looks like a dead end and we need to examine further, so we list all the functions in gdb:
-~~~bash
-0x080482f8  _init
-0x08048340  gets
-0x08048340  gets@plt
-0x08048350  fwrite
-0x08048350  fwrite@plt
-0x08048360  system
-0x08048360  system@plt
-0x08048370  __gmon_start__
-0x08048370  __gmon_start__@plt
-0x08048380  __libc_start_main
-0x08048380  __libc_start_main@plt
-0x08048390  _start
-0x080483c0  __do_global_dtors_aux
-0x08048420  frame_dummy
-0x08048444  run                <<--- THIS LOOKS PROMISING!!!
-0x08048480  main
-0x080484a0  __libc_csu_init
-0x08048510  __libc_csu_fini
-0x08048512  __i686.get_pc_thunk.bx
-0x08048520  __do_global_ctors_aux
-~~~
-**run()** looks like our way forward, as the assembly dump suggest by calling a system function:
+This looks like a dead end and we need to examine further, so we list all the functions in gdb, using **info functions** command.  
+From the listing, **run()** looks like our way forward, as also the assembly dump suggest by calling a system function:
 ~~~assembly
    0x08048444 <+0>:	push   %ebp
    0x08048445 <+1>:	mov    %esp,%ebp
