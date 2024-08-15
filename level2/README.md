@@ -46,13 +46,13 @@ We can see there is a buffer overflow vulnerable function **gets()** again, but 
 ~~~C
 void p(void)
 {
-  void *unaff_retaddr;
+  void *unaff_retaddr;   //uninitiated void pointer, from the name we can assume it is for storing return address. 
   char local_50 [76];
   
   fflush(stdout);
   gets(local_50);
-  if (((uint)unaff_retaddr & 0xb0000000) == 0xb0000000) {
-    printf("(%p)\n",unaff_retaddr);
+  if (((uint)unaff_retaddr & 0xb0000000) == 0xb0000000) {             //casted as unsigned int (4 bytes), comparing the return address with bitwise AND with 0xb0000000
+    printf("(%p)\n",unaff_retaddr);                                   //if true, prints it and exits with 1.
                     /* WARNING: Subroutine does not return */
     _exit(1);
   }
@@ -61,6 +61,6 @@ void p(void)
   return;
 }
 ~~~
-We can already see that the program is **allocating 80 bytes, 76 for the string and 4 bytes for uint variable (4 bytes on 32 bit systems)**. From what we already know about **stack frame** for program execution, this will be our potential offset for force execution of what we might need on the place of the return memory address.
+We can already see that the program is **allocating 80 bytes, 76 for the string and 4 bytes for uint variable (4 bytes on 32 bit systems)**. From what we already know about **stack frame** for program execution, this will be our potential offset for force execution of what we might need on the place of the return memory address. **BUT!** this code is little wittier, as the return address comparation here is effectivelly blocking the classical buffer overflow. Why? Read the stuff [HERE](https://unix.stackexchange.com/questions/509607/how-a-64-bit-process-virtual-address-space-is-divided-in-linux). As we can see, 0xbf****** address ranges are historically associated with user memory on 32 bit x86 systems - the stack, in other words. So, the code above is blocking the execution of the return memory addresses located on the stack, exiting the flow. Fortunatelly, there is also a **heap**...
 
 
