@@ -42,4 +42,25 @@ As we can see, it just call one function and returns, so the printing must happe
    0x0804851b <+71>:	movl   $0x1,(%esp)
    0x08048522 <+78>:	call   0x80483d0 <_exit@plt>
 ~~~
-We can see there is a buffer overflow vulnerable function **gets()** again, but this time there is no system call thant will let us further. So we must think about the way how to force the execution of whar we need.
+We can see there is a buffer overflow vulnerable function **gets()** again, but this time there is no system call thant will let us further. So we must think about the way how to force the execution of what we need. We can use **Ghidra** that will help us understand a little more about p() function with its decompile abilities.
+~~~C
+void p(void)
+{
+  void *unaff_retaddr;
+  char local_50 [76];
+  
+  fflush(stdout);
+  gets(local_50);
+  if (((uint)unaff_retaddr & 0xb0000000) == 0xb0000000) {
+    printf("(%p)\n",unaff_retaddr);
+                    /* WARNING: Subroutine does not return */
+    _exit(1);
+  }
+  puts(local_50);
+  strdup(local_50);
+  return;
+}
+~~~
+We can already see that the program is **allocating 80 bytes, 76 for the string and 4 bytes for uint variable (4 bytes on 32 bit systems)**. From what we already know about **stack frame** for program execution, this will be our potential offset for force execution of what we might need on the place of the return memory address.
+
+
