@@ -68,7 +68,8 @@ We will use the [**return to libc**](https://en.wikipedia.org/wiki/Return-to-lib
 ~~~
 overflow on offset -> p() return address -> mem address of system() -> exit() -> mem address of "/bin/sh"
 ~~~
-**exit()** is called in the payload to ensure the proper flow of the program - if we don't control this, program might cras or behaves unexpectally. By calling exit function, we gracefully end it so our call to the **system("/bin/sh") runs smoothly. No, in the payload, the exist is placed before the "/bin/sh". That does not mean it will be called before it. The way the stack frame is constructed, **system("/bin/sh") is called first and then the **exit()**.  
+**exit()** is called in the payload to ensure the proper flow of the program - if we don't control this, program might cras or behaves unexpectally. By calling exit function, we gracefully end it so our call to the **system("/bin/sh") runs smoothly. No, in the payload, the exist is placed before the "/bin/sh". That does not mean it will be called before it. The way the stack frame is constructed, **system("/bin/sh") is called first and then the **exit()**.
+
 Return address of **p()** is **0x0804853e**.
 Using gdb's brakepoint, we will find the rest of what we need:
 ~~~bash
