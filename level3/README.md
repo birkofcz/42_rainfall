@@ -2,7 +2,7 @@
 
 As we see, **level3** binary prints out what is being fed to it via stdin:
 ~~~shell
-.level3 
+./level3 
 42 let me pass
 42 let me pass
 ~~~
