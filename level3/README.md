@@ -35,7 +35,7 @@ Thus, we need to somehow modify the variable m. It is not defined in the scope o
 We use **gdb**'s "info variables" to get its memaddress: **0x0804988c**
 
 ## Format string attack
-**printf()** can be utilized for **format string attack** as described [HERE](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/). We will force the insertion of value 64 into the **m** variable memory position by using printf's variadic nature.
+**printf()** can be utilized for **format string attack** as described [HERE](https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/) or [HERE](https://infosecwriteups.com/exploiting-format-string-vulnerability-97e3d588da1b). We will force the insertion of value 64 into the **m** variable memory position by using printf's variadic nature.
 
 **Step 1**: we find where in the stack is the variable read by fgets - this will be our way in. We do this by explouting printf to print us the memory:
 ~~~shell
