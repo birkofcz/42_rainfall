@@ -42,5 +42,16 @@ This, as we can see, will be our target as it will trigger the shell for us. Mem
 We will be using format string attack again, but there is one big difference here: as we can see, both **o()** and **n()** does not
 return, but using **exit()** instead, preventing the overwrite with format string. Thus, we will have to overwrite the call to exit with the **o()** function.
 
+We will do this by overwriting the **GOT** (Global Offset Table] address - we will link it to the **o()** function.
+We can use Ghidra's symbol tree to find **.got.plt** object - which is a part of GOT with pointers to funtions from the **PLT** (Procedure Linkage Table). In simple terms, it is a contact list to functions called from outside of the binary runtime. When we examine the .obj.plt, we find out that the address of **exit** is **0x08049838**.
+Now, we can prepare the payload:
+~~~shell
+address of exit() in hex - %addressofoindecimalx + positioning of exit
+~~~
+We will firstly find the exit() function:
+~~~shell
+python -c "print '\x08\x04\x98\x38'[::-1] + '%x '*10" | ./level5
+~~~
+
 
 
