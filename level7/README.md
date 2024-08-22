@@ -32,7 +32,7 @@ undefined4 main(undefined4 param_1,int param_2)
   return 0;
 }
 ~~~
-It allocates some memory for parameters, but the main part is the file stream, which is obvisously read into the variable **c**, which is not used here. Let's dig further...unti; we find the 
+It allocates some memory for parameters, but the main part is the file stream, which is obvisously read into the variable **c**, which is not used here. Let's dig further...until we find the 
 **m()** function that is printing the c variable (also doe some other useless stuff..).
 ~~~C
 void m(void *param_1,int param_2,char *param_3,int param_4,int param_5)
@@ -44,4 +44,40 @@ void m(void *param_1,int param_2,char *param_3,int param_4,int param_5)
   return;
 }
 ~~~
-S,we need to run the **m()** somehow. We can probably use the 
+We therefore need to run m().
+
+## Buffer overflow
+
+We will use vulnerable strcpy for this, this time it will be a little more complex. We can try to run the binary with **ltrace** to see what library functions are being called during the runtime and with what arguments...
+~~~shell
+level7@RainFall:~$ ltrace ./level7 42 42
+__libc_start_main(0x8048521, 3, 0xbffff7e4, 0x8048610, 0x8048680 <unfinished ...>
+malloc(8)                                        = 0x0804a008
+malloc(8)                                        = 0x0804a018
+malloc(8)                                        = 0x0804a028
+malloc(8)                                        = 0x0804a038
+strcpy(0x0804a018, "42")                         = 0x0804a018
+strcpy(0x0804a038, "42")                         = 0x0804a038
+fopen("/home/user/level8/.pass", "r")            = 0
+fgets( <unfinished ...>
+--- SIGSEGV (Segmentation fault) ---
++++ killed by SIGSEGV +++
+~~~
+As previously seen in the Ghidra analysis, program calls malloc four times, allocating the memory for arguments, than uses strcpy to copy them to this space. 
+
+Now, lets try to overflow the argv[1] using **Wiremask** pattern generator:
+~~~shell
+level7@RainFall:~$ ltrace ./level7 Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+__libc_start_main(0x8048521, 2, 0xbffff784, 0x8048610, 0x8048680 <unfinished ...>
+malloc(8)                                        = 0x0804a008
+malloc(8)                                        = 0x0804a018
+malloc(8)                                        = 0x0804a028
+malloc(8)                                        = 0x0804a038
+strcpy(0x0804a018, "Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab"...) = 0x0804a018
+strcpy(0x37614136, NULL <unfinished ...>
+--- SIGSEGV (Segmentation fault) ---
++++ killed by SIGSEGV +++
+~~~
+Here, we can observe, that it overflows at the offset of 20 - **rewriting** the dest arg of the second strcpy. 
+
+
