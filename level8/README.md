@@ -22,6 +22,8 @@ Major findings:
 9) When "reset" is entered, memory is freed. 
 10) When "login" is entered, global "auth" viariable is tested - specificaly if there is something on its 32nd byte. If yes - system si called. If not, "password:" string is printed and loop is started again.
 
-~~~C
+## Experimentation
+As we found out above, there is a specific combination of input that needs to be entered, se when the **login** is entered, the memory space of **auth** variable will have something on its 32nd byte.
+As we experiment along, as the binary is printing the memory addresses, we will find out that the program is reacting only when above strings are entered - but only **"auth "** and **"service"** are filling the memory. 
 
-~~~
+We start by allocating memory - writing **"auth_"** and we get the memory address of the allocated memory. Now we need to enter **"service"** (optionally with the input, as we can see
