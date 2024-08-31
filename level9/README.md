@@ -43,5 +43,8 @@ void __thiscall N::setAnnotation(N *this,char *param_1)
   return;
 }
 ~~~
-As we see, this binary is C++, memory is being allocated when the class in created. Also, the function **setAnnotation()** is called, expecting the argument from main, measuring it and calling **memcpy(*dest, *src, int length)**.
+As we see, this binary is C++, two instances of a class N is allocated. Also, the function **setAnnotation()** is called for the first N instance, expecting the argument from main, measuring it and calling **memcpy(*dest, *src, int length)**. There is no system call, nor any function to print or revel the flag for the next level. But **memcpy** is vulnerable to overflow, so let's try that and invoke shell on the place of return address. 
+
+## Overflow
+
 
