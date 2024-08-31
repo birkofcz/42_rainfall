@@ -4,9 +4,16 @@ This is the short overview of the levels examined and vulnerabilities used to ad
 | level | Exploit |
 | ------ | ------- |
 | 0 | Simple reverse engineering |
+| 1 | Buffer overflow attack |
+| 2 | ret2libc attack |
+| 3 | format string attack |
+| 4 | format string attack |
+| 5 | format string attack + GOT overwrite |
+| 6 | Buffer overflow attack |
+| 7 | Buffer overflow attack + GOT overwrite |
+| 8 | Simple(??) reverse engineering |
+| 9 | Buffer overflow attack |
 
-
-Level 	Ressources 	Exploit
 0 	EAX register 	Simple reverse engineering
 1 	EIP register | Byte order | cat 	Buffer overflow attack
 2 		ret2libc attack
