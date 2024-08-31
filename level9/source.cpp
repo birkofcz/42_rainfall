@@ -31,8 +31,10 @@ class N
   }
 };
 
-int main(int argc, char **argv) {
-  if (argc < 2) {
+int main(int argc, char **argv) 
+{
+  if (argc < 2) 
+  {
     exit(1);
   }
 
@@ -41,5 +43,5 @@ int main(int argc, char **argv) {
 
   *first->setAnnotation(argv[1])
   
-  return (*first + *second);
+  return (*first + *second);     //here is your 11 on return when it is not segfaulting.
 }
