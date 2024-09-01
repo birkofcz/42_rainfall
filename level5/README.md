@@ -1,10 +1,10 @@
 ## Basic analysis
 There is level5 binary waiting for us and again, it behaves just the same - printing what it reads from stdin:
-
+~~~shell
 ./level5
 42 let me pass
 42 let me pass
-
+~~~
 OK, Ghidra it is:
 ~~~C
 void main(void)
