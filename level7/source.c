@@ -5,7 +5,7 @@
 
 char pw_buffer[100];
 
-void		m(void)
+void m(void)
 {
 	time_t	current_time;
 
@@ -14,7 +14,7 @@ void		m(void)
 	return;
 }
 
-int			main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 	void	*ptr1;
 	void	*ptr2;
