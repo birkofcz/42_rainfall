@@ -103,6 +103,22 @@ The return address is a critical component of a stack frame. When a function is 
 **Function Parameters**
 Function parameters are passed to a function via the stack (or registers, depending on the calling convention), and they are usually stored in the caller’s stack frame. When the function is called, these parameters are accessible via positive offsets from the base pointer (EBP), since EBP points to the caller’s stack frame. The function can then use these offsets to retrieve the values of the parameters passed to it, which are necessary for its operations.
 
+## Reverse Engineering Overview
+Reverse engineering is the process of analyzing a system, software, or hardware to understand its design, functionality, and operation, often with the goal of replicating or improving it. In the context of software, reverse engineering typically involves deconstructing a compiled program back into its original source code or an equivalent form, allowing an engineer to study how the software works. This can include examining binary files, analyzing the program’s structure, understanding its algorithms, and identifying potential vulnerabilities or malicious code. Basic concepts in reverse engineering include **disassembly** (converting binary code back into assembly language), **decompilation** (attempting to convert binary code into a higher-level language), **static analysis** (analyzing the code without executing it), and **dynamic analysis** (observing the behavior of the software during execution). Reverse engineering is commonly used in security research, malware analysis, software debugging, and compatibility studies. It requires a strong understanding of computer architecture, programming languages, and the specific system being analyzed.
+
+Here's a table of commonly used registers in reverse engineering, particularly in the context of x86 architecture:
+| Register | Name              | Description                                                                 |
+|----------|-------------------|-----------------------------------------------------------------------------|
+| EAX      | Accumulator        | General-purpose register often used for arithmetic operations.               |
+| EBX      | Base               | General-purpose register that can be used for indexing and pointer operations.|
+| ECX      | Counter            | Often used as a loop counter or for string operations.                        |
+| EDX      | Data               | General-purpose register often used in I/O operations and arithmetic operations.|
+| ESI      | Source Index       | Used for pointer arithmetic in data segment operations, often in string processing.|
+| EDI      | Destination Index  | Used for pointer arithmetic in data segment operations, often in string processing.|
+| EBP      | Base Pointer       | Points to the base of the current stack frame, used for stack frame management.|
+| ESP      | Stack Pointer      | Points to the top of the current stack, used for managing the stack.         |
+| EIP      | Instruction Pointer| Points to the next instruction to be executed by the CPU.                   |
+| EFLAGS   | Flags Register     | Holds flags that control CPU operations and indicate the status of operations (e.g., zero, carry, overflow).|
 
 ## Vulnerabilities
 
