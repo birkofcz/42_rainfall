@@ -63,6 +63,37 @@ The Global Offset Table (GOT) is a crucial part of the dynamic linking process i
 **PLT (Procedure Linkage Table)**  
 The Procedure Linkage Table (PLT) works in conjunction with the GOT to facilitate dynamic function calls in ELF binaries. When a program calls an external function, it first goes through the PLT, which then redirects the call to the correct address. The PLT is essentially a stub that ensures the actual address of the function is resolved and cached in the GOT. The first time a function is called, the PLT jumps to the dynamic linker, which then finds the correct address and updates the GOT. Subsequent calls to the function go directly to the address stored in the GOT, bypassing the PLT. This mechanism provides a balance between flexibility (allowing for dynamic linking) and performance (minimizing the overhead of repeated lookups).
 
+**Stack Frame**  
+A stack frame is a structure that the program uses to manage function calls and local variables in a stack-based memory architecture. Every time a function is called, a new stack frame is created and pushed onto the stack. This frame contains several key components: the function's return address (so the program knows where to return after the function finishes), the saved frame pointer (which points to the previous stack frame), and space for the function’s local variables and any arguments passed to it. The stack frame also handles the dynamic allocation of memory for variables that are created during the function's execution.
+
+For example, when a function foo() calls another function bar(), a new stack frame for bar() is pushed onto the stack. This frame will include the return address for foo(), so when bar() finishes, control can be returned to the correct location in foo(). After bar() completes, its stack frame is popped off the stack, and the stack pointer is adjusted to point back to foo()'s frame. This organized structure allows for nested function calls and recursion, ensuring that each function has its own isolated environment in memory, while also keeping track of the sequence of function calls.
+
+**EBP (Base Pointer) and ESP (Stack Pointer)**  
+The EBP (Base Pointer) and ESP (Stack Pointer) are key registers in the management of stack frames during function calls in x86 architecture. The ESP points to the top of the current stack, constantly changing as the stack grows and shrinks with function calls and returns. The EBP, on the other hand, is used as a stable reference point within a stack frame. When a function is called, the current value of EBP is pushed onto the stack and then EBP is updated to point to the current top of the stack, effectively marking the beginning of the new stack frame. This allows the function to easily access its parameters and local variables using offsets from EBP.
+
+The typical first lines of assembly in a function that establish this setup are as follows:
+
+~~~assembly
+Copy code
+push ebp       ; Save the old base pointer
+mov ebp, esp   ; Set EBP to the current top of the stack (ESP)
+sub esp, N     ; Allocate space for local variables by decreasing ESP
+~~~
+In this code, push ebp saves the previous base pointer, and mov ebp, esp sets the base pointer to the current stack pointer, effectively creating a new stack frame. The sub esp, N line adjusts the stack pointer to allocate space for local variables within the new stack frame.
+
+After the function completes, the stack frame is dismantled with instructions like:
+
+~~~assembly
+Copy code
+mov esp, ebp   ; Restore the stack pointer to the base pointer
+pop ebp        ; Restore the old base pointer
+ret            ; Return to the calling function
+~~~
+
+These instructions ensure that the stack is properly cleaned up and that control is returned to the correct place in the calling function, using the saved return address. This structure maintains order in function calls, supporting recursion and nested calls efficiently.
+
+## Vulnerabilities
+
 ### Buffer Overflow
 A buffer overflow occurs when a program writes more data to a block of memory, or buffer, than it can hold. This excess data can overflow into adjacent memory, potentially overwriting valid data or executable code. For example, if a function expects a user input of 20 characters but receives 50 characters instead, the extra 30 characters might overwrite other critical memory areas. This can cause the program to crash, corrupt data, or even allow an attacker to execute arbitrary code. An attacker might craft the input in such a way that it overwrites the return address of a function, redirecting execution to a payload they control. The classic example is exploiting a stack buffer overflow to inject shellcode and gain unauthorized access to a system.
 
