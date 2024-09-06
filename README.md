@@ -109,7 +109,7 @@ Reverse engineering is the process of analyzing a system, software, or hardware 
 Here's a table of commonly used registers in reverse engineering, particularly in the context of x86 architecture:
 | Register | Name              | Description                                                                 |
 |----------|-------------------|-----------------------------------------------------------------------------|
-| EAX      | Accumulator        | General-purpose register often used for arithmetic operations.               |
+| EAX      | Accumulator        | General-purpose register often used for arithmetic operations. Also serves as return value register            |
 | EBX      | Base               | General-purpose register that can be used for indexing and pointer operations.|
 | ECX      | Counter            | Often used as a loop counter or for string operations.                        |
 | EDX      | Data               | General-purpose register often used in I/O operations and arithmetic operations.|
