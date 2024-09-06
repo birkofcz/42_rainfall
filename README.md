@@ -23,3 +23,7 @@ Even though presented vulnerabilities are pretty basic and mostly not-existent i
 4) Litle training in HEX values reading and how to navigate in memory
 5) Work with various debugging and reverse engineering tools, namely **gdb**, **Ghidra** and **Wiremask**.
 
+Let's quickly explore some of those mentioned above:
+
+## Concepts
+
