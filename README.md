@@ -74,7 +74,6 @@ The EBP (Base Pointer) and ESP (Stack Pointer) are key registers in the manageme
 The typical first lines of assembly in a function that establish this setup are as follows:
 
 ~~~assembly
-Copy code
 push ebp       ; Save the old base pointer
 mov ebp, esp   ; Set EBP to the current top of the stack (ESP)
 sub esp, N     ; Allocate space for local variables by decreasing ESP
@@ -84,13 +83,27 @@ In this code, push ebp saves the previous base pointer, and mov ebp, esp sets th
 After the function completes, the stack frame is dismantled with instructions like:
 
 ~~~assembly
-Copy code
 mov esp, ebp   ; Restore the stack pointer to the base pointer
 pop ebp        ; Restore the old base pointer
 ret            ; Return to the calling function
 ~~~
 
 These instructions ensure that the stack is properly cleaned up and that control is returned to the correct place in the calling function, using the saved return address. This structure maintains order in function calls, supporting recursion and nested calls efficiently.
+
+**The EBP (Base Pointer)** acts as a constant reference point within the current stack frame. Once it's set at the beginning of a function, it doesn't change until the function is finished. This allows the program to use fixed offsets from EBP to access function parameters and local variables, making it easy to navigate within the stack frame.
+
+**The ESP (Stack Pointer)**, on the other hand, is more dynamic. It points to the top of the stack and changes as the stack grows or shrinks during the execution of the function. For example, when local variables are allocated or when function calls push return addresses onto the stack, ESP adjusts to reflect the new top of the stack. This makes ESP a flexible tool for managing the current position in the stack, while EBP provides a stable anchor for accessing data within the current stack frame.
+
+So, in summary:
+
+**EBP** is a stable pointer used to reference the fixed structure of the current stack frame (like parameters and local variables).
+**ESP** is a dynamic pointer that tracks the top of the stack as it changes during function execution.
+
+
+
+
+
+
 
 ## Vulnerabilities
 
