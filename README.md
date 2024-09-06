@@ -1,4 +1,6 @@
 # rainfall
+<img src="0_resources/rainfall_header.webp" width="500"/>
+
 This project is a second in a series of three to elaborate on the basics of cybersecurity, letting us play with various vulnerabilities in binaries, teaching basic principles of reverse engineering.
 This is the short overview of the levels examined and vulnerabilities used to advance in them:
 | level | Exploit |
