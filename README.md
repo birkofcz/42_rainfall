@@ -50,12 +50,18 @@ ELF Header:
   Size of this header:               64 (bytes)
 ~~~
 
-**Program Execution and Build Process**
+**Program Execution and Build Process**  
 When you compile a program, the compiler generates an object file, which is typically in ELF format. The linker then combines these object files with any necessary libraries to create an executable. The executable contains all the information needed to load the program into memory and execute it, including the entry point, where execution starts.
 
 During execution, the operating system’s loader reads the ELF headers to determine how to load the program into memory. It maps the segments into the appropriate memory regions (e.g., .text into executable memory, .data into writable memory), sets up the stack, and jumps to the entry point specified in the ELF header to start executing the program.
 
 The ELF format's flexibility allows it to be used for both static and dynamic linking. In static linking, all code is included directly in the executable, while dynamic linking allows the executable to use shared libraries, reducing the overall size of the binary. This standardization and versatility make ELF a foundational component of program execution in Unix-like systems.
+
+**GOT (Global Offset Table)**  
+The Global Offset Table (GOT) is a crucial part of the dynamic linking process in ELF binaries. It is essentially an array of pointers used to resolve addresses of global variables and functions at runtime, particularly when dealing with shared libraries. When a program is compiled, it doesn't know the exact memory addresses of external functions or global variables. Instead, it uses the GOT to store the addresses of these functions and variables. Initially, the GOT entries point to the PLT (Procedure Linkage Table), but as the program runs, these entries are updated with the actual addresses. This allows the program to access functions and variables across different modules efficiently, enabling dynamic linking and position-independent code (PIC).
+
+**PLT (Procedure Linkage Table)**  
+The Procedure Linkage Table (PLT) works in conjunction with the GOT to facilitate dynamic function calls in ELF binaries. When a program calls an external function, it first goes through the PLT, which then redirects the call to the correct address. The PLT is essentially a stub that ensures the actual address of the function is resolved and cached in the GOT. The first time a function is called, the PLT jumps to the dynamic linker, which then finds the correct address and updates the GOT. Subsequent calls to the function go directly to the address stored in the GOT, bypassing the PLT. This mechanism provides a balance between flexibility (allowing for dynamic linking) and performance (minimizing the overhead of repeated lookups).
 
 ### Buffer Overflow
 A buffer overflow occurs when a program writes more data to a block of memory, or buffer, than it can hold. This excess data can overflow into adjacent memory, potentially overwriting valid data or executable code. For example, if a function expects a user input of 20 characters but receives 50 characters instead, the extra 30 characters might overwrite other critical memory areas. This can cause the program to crash, corrupt data, or even allow an attacker to execute arbitrary code. An attacker might craft the input in such a way that it overwrites the return address of a function, redirecting execution to a payload they control. The classic example is exploiting a stack buffer overflow to inject shellcode and gain unauthorized access to a system.
