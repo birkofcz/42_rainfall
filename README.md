@@ -123,7 +123,8 @@ Here's a table of commonly used registers in reverse engineering, particularly i
 ## Vulnerabilities
 
 ### Buffer Overflow
-A buffer overflow occurs when a program writes more data to a block of memory, or buffer, than it can hold. This excess data can overflow into adjacent memory, potentially overwriting valid data or executable code. For example, if a function expects a user input of 20 characters but receives 50 characters instead, the extra 30 characters might overwrite other critical memory areas. This can cause the program to crash, corrupt data, or even allow an attacker to execute arbitrary code. An attacker might craft the input in such a way that it overwrites the return address of a function, redirecting execution to a payload they control. The classic example is exploiting a stack buffer overflow to inject shellcode and gain unauthorized access to a system.  
+A buffer overflow occurs when a program writes more data to a block of memory, or buffer, than it can hold. This excess data can overflow into adjacent memory, potentially overwriting valid data or executable code. For example, if a function expects a user input of 20 characters but receives 50 characters instead, the extra 30 characters might overwrite other critical memory areas. This can cause the program to crash, corrupt data, or even allow an attacker to execute arbitrary code. An attacker might craft the input in such a way that it overwrites the return address of a function, redirecting execution to a payload they control. The classic example is exploiting a stack buffer overflow to inject shellcode and gain unauthorized access to a system.
+
 ![Stack overflow](https://www.cameronwickes.co.uk/_nuxt/uploads/9135072-1027.jpg)
 Source: [https://www.cameronwickes.co.uk/stack-frames-pointers/](https://www.cameronwickes.co.uk/stack-frames-pointers/)
 
