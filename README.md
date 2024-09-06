@@ -25,9 +25,7 @@ Even though presented vulnerabilities are pretty basic and mostly not-existent i
 
 Let's quickly explore some of those mentioned above:
 
-## Concepts
-
-### ELF Binary Basics
+## ELF Binary 
 The Executable and Linkable Format (ELF) is a standard file format for executables, object code, shared libraries, and core dumps in Unix-like operating systems. An ELF binary contains several sections and segments that define how the program is structured and how it should be loaded into memory. The main sections include the .text section, which contains the executable code, the .data section for initialized global and static variables, and the .bss section for uninitialized variables. ELF also includes headers that describe the file’s organization and how the operating system should load the program.
 
 For example, a basic ELF header might look like this:
@@ -99,10 +97,11 @@ So, in summary:
 **EBP** is a stable pointer used to reference the fixed structure of the current stack frame (like parameters and local variables).
 **ESP** is a dynamic pointer that tracks the top of the stack as it changes during function execution.
 
+**Return Address**
+The return address is a critical component of a stack frame. When a function is called, the address of the instruction immediately following the call (i.e., where the program should return to after the function completes) is pushed onto the stack. This return address is stored just above the base pointer (EBP) in the stack frame. When the function finishes, the return address is popped off the stack, and the program jumps back to this address to continue execution. This mechanism ensures that after a function completes, control is returned to the correct location in the calling function.
 
-
-
-
+**Function Parameters**
+Function parameters are passed to a function via the stack (or registers, depending on the calling convention), and they are usually stored in the caller’s stack frame. When the function is called, these parameters are accessible via positive offsets from the base pointer (EBP), since EBP points to the caller’s stack frame. The function can then use these offsets to retrieve the values of the parameters passed to it, which are necessary for its operations.
 
 
 ## Vulnerabilities
