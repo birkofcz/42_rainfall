@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char pw_buffer[100];
+char pw_buffer[68];
 
 void m(void)
 {
@@ -16,25 +16,24 @@ void m(void)
 
 int main(int argc, char **argv)
 {
-	void	*ptr1;
-	void	*ptr2;
-	void	*ptr3;
-	FILE	*fd;
+    int *struct1 = (int *)malloc(8);
+    struct1[0] = 1;
+    struct1[1] = (int)malloc(8);
 
-	ptr1 = (void *)malloc(8);
-	*ptr1 = 1; 
-	ptr2 = (void *)malloc(8);
-	*(void **)(ptr1 + 1) = ptr2;
-	ptr3 = (void *)malloc(8);
-	*ptr3 = 2;
-	ptr2 = (void *)malloc(8);
-	*(void **)(ptr3 + 1) = ptr2;
-  
-	strcpy((char *)ptr1[1], argv[1]);
-	strcpy((char *)ptr3[1], argv[2]);
-  
-	fd = fopen("/home/user/level8/.pass", "r");
-	fgets(pw_buffer, 68, fd);
-	puts("~~");
-	return 0;
+    int *struct2 = (int *)malloc(8);
+    struct2[0] = 2;
+    struct2[1] = (int)malloc(8);
+    FILE *fd;
+
+    strcpy((char *)struct1[1], argv[1]);  
+    strcpy((char *)struct2[1], argv[2]);
+
+    FILE *file = fopen("/home/user/level8/.pass", "r");
+    if (file != NULL) {
+        fgets(pw_buffer, sizeof(pw_buffer), file);
+        fclose(file);                              
+    }
+
+    puts("~~");
+    return 0;
 }
